@@ -1,20 +1,21 @@
 package com.example.talesoftheunknown.view.Main
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Binder
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.talesoftheunknown.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.talesoftheunknown.data.Model.Story.ListStoryItem
 import com.example.talesoftheunknown.databinding.ActivityMainBinding
 import com.example.talesoftheunknown.view.Add.AddActivity
 import com.example.talesoftheunknown.view.Auth.RegisterActivity
+import com.example.talesoftheunknown.view.Story.DetailStoryActivity
 import com.example.talesoftheunknown.view.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityMainBinding
+    private lateinit var rvStories: RecyclerView
+    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,47 @@ class MainActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
-        playAnimation()
+
+        adapter = MainAdapter(emptyList())
+        setupAdapter()
+
+    }
+
+    private fun setupAdapter() {
+        binding.apply {
+            rvStories.layoutManager = LinearLayoutManager(this@MainActivity)
+            rvStories.setHasFixedSize(true)
+            rvStories.adapter = adapter
+        }
+
+        viewModel.getStories()
+        viewModel.listStoryItem.observe(this) { stories ->
+            Log.d("MainActivity", "Observer triggered with data: $stories")
+            adapter.setList(stories)
+            adapter.setOnItemClickFunction(object : MainAdapter.OnItemClickCallback{
+                override fun onFunctionClicked(data: ListStoryItem){
+                    Intent(this@MainActivity, DetailStoryActivity::class.java).also {
+                        it.putExtra(DetailStoryActivity.EXTRA_USERNAME, data.name)
+                        it.putExtra(DetailStoryActivity.EXTRA_ID, data.id)
+                        it.putExtra(DetailStoryActivity.EXTRA_IMG, data.photoUrl)
+                        it.putExtra(DetailStoryActivity.EXTRA_DESC, data.description)
+                        it.putExtra(DetailStoryActivity.EXTRA_LON, data.lon)
+                        it.putExtra(DetailStoryActivity.EXTRA_LAT, data.lat)
+                        Toast.makeText(baseContext, "active", Toast.LENGTH_SHORT).show()
+                        startActivity(it)
+                    }
+                }
+            })
+
+            rvStories.adapter = adapter
+        }
+
+        val addStory = binding.addButton
+        addStory.setOnClickListener{
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun setupView() {
@@ -59,20 +102,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
-
-        val name = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(100)
-        val message = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
-        val logout = ObjectAnimator.ofFloat(binding.logoutButton, View.ALPHA, 1f).setDuration(100)
-
-        AnimatorSet().apply {
-            playSequentially(name, message, logout)
-            startDelay = 100
-        }.start()
-    }
 }

@@ -7,7 +7,6 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.Auth.RegisterActivity">
@@ -110,6 +109,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textEmailAddress" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -140,28 +140,43 @@
             app:startIconDrawable="@drawable/baseline_lock_24"
             tools:alpha="100">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.example.talesoftheunknown.component.ProtectedEditText
                 android:id="@+id/R.id.ed_register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="8"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/signupButton"
+        <com.example.talesoftheunknown.component.ProtectedButton
+            android:id="@+id/protectedButton"
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:alpha="0"
-            android:backgroundTint="@color/navy"
-            android:text="@string/signup"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
             tools:alpha="100" />
+
+<!--        <Button-->
+<!--            android:id="@+id/signupButton"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="64dp"-->
+<!--            android:layout_marginStart="32dp"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:layout_marginEnd="32dp"-->
+<!--            android:alpha="0"-->
+<!--            android:backgroundTint="@color/navy"-->
+<!--            android:text="@string/signup"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"-->
+<!--            tools:alpha="100" />-->
 
         <TextView
             android:id="@+id/textContentLogin"
@@ -172,7 +187,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.411"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signupButton"
+            app:layout_constraintTop_toBottomOf="@+id/protectedButton"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -187,7 +202,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textContentLogin"
-            app:layout_constraintTop_toBottomOf="@+id/signupButton"
+            app:layout_constraintTop_toBottomOf="@+id/protectedButton"
             app:layout_constraintVertical_bias="1.0" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -205,6 +220,7 @@
             android:layout_height="64dp"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.1" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

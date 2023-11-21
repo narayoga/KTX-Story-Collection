@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.talesoftheunknown.Injection
+import com.example.talesoftheunknown.data.Model.Auth.UserPreference
 import com.example.talesoftheunknown.data.Model.UserRepository
 import com.example.talesoftheunknown.view.Auth.LoginViewModel
 import com.example.talesoftheunknown.view.Main.MainViewModel
