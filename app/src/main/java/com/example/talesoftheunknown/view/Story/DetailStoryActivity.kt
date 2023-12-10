@@ -25,12 +25,12 @@ class DetailStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Get data from intent extras
-        val userId = intent.getIntExtra(EXTRA_ID, 0) // Assuming ID is an Int, replace with the appropriate type
+        val userId = intent.getIntExtra(EXTRA_ID, 0)
         val userImgUrl = intent.getStringExtra(EXTRA_IMG)
         val userName = intent.getStringExtra(EXTRA_USERNAME)
         val userDesc = intent.getStringExtra(EXTRA_DESC)
-        val userLon = intent.getDoubleExtra(EXTRA_LON, 0.0) // Assuming Lon is a Double, replace with the appropriate type
-        val userLat = intent.getDoubleExtra(EXTRA_LAT, 0.0) // Assuming Lat is a Double, replace with the appropriate type
+        val userLon = intent.getDoubleExtra(EXTRA_LON, 0.0)
+        val userLat = intent.getDoubleExtra(EXTRA_LAT, 0.0)
 
         // Populate UI components with data
         Glide.with(this)

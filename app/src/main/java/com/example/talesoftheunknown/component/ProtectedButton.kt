@@ -32,7 +32,7 @@ class ProtectedButton: AppCompatButton {
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "Submit" else "isi password minimal 8 char"
+        text = if(isEnabled) "Submit" else "Submit"
     }
 
     private fun init() {

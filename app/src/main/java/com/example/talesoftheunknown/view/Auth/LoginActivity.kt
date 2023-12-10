@@ -14,8 +14,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
+import com.example.talesoftheunknown.Injection
 import com.example.talesoftheunknown.component.ProtectedButton
 import com.example.talesoftheunknown.component.ProtectedEditText
 import com.example.talesoftheunknown.data.Model.Auth.Login
@@ -30,7 +30,7 @@ import retrofit2.HttpException
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, Injection.providePagingRepository(this))
     }
     private lateinit var binding: ActivityLoginBinding
     private lateinit var protectedButton: ProtectedButton
@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
         setupView()
         setupAction()
         playAnimation()
-//        setMyButtonEnable()
+//        inputPassword()
 
         protectedEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -64,6 +64,26 @@ class LoginActivity : AppCompatActivity() {
         val result = protectedEditText.text
         protectedButton.isEnabled = result != null && result.toString().length >= 8
     }
+//    private fun inputPassword() {
+//
+//        val passwordEditText = binding.RIdEdLoginPassword
+//        val passwordEditTextLayout = binding.passwordEditTextLayout
+//        passwordEditText.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+//            }
+//
+//            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+//            }
+//
+//            override fun afterTextChanged(editable: Editable?) {
+//                if (editable.toString().length < 8) {
+//                    passwordEditTextLayout.error = "Minimum 8 characters required"
+//                } else {
+//                    passwordEditTextLayout.error = null
+//                }
+//            }
+//        })
+//    }
 
     private fun setupView() {
         @Suppress("DEPRECATION")
@@ -80,6 +100,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.protectedButton.setOnClickListener {
+            loadingAnimation(true)
             val request = UserRequest(email = "test", password = "test")
             request.email = binding.RIdEdLoginEmail.text.toString().trim()
             request.password = binding.RIdEdLoginPassword.text.toString().trim()
@@ -95,18 +116,21 @@ class LoginActivity : AppCompatActivity() {
                         val token = userResponse.token
                         viewModel.saveSession(UserResponse(Login("", name, token), false, "Success", true ))
                     }
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    loadingAnimation(false)
+                    startActivity(intent)
 
-                    AlertDialog.Builder(this@LoginActivity).apply {
-                        setTitle("Success")
-                        setMessage("data: ${response.loginResult}")
-                        setPositiveButton("Next") { _, _ ->
-                            val intent = Intent(context, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                        }
-                        create()
-                        show()
-                    }
+//                    AlertDialog.Builder(this@LoginActivity).apply {
+//                        setTitle("Success")
+//                        setMessage("data: ${response.loginResult}")
+//                        setPositiveButton("Next") { _, _ ->
+//                            val intent = Intent(context, MainActivity::class.java)
+//                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                            startActivity(intent)
+//                        }
+//                        create()
+//                        show()
+//                    }
                 } catch(e: HttpException) {
                     val errorMessage = "Login failed: ${e.message()}"
                     Log.e("Login", errorMessage)
@@ -122,12 +146,15 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadingAnimation(state: Boolean){
+        if(state){
+            binding.progressBar.visibility = View.VISIBLE
+        }else{
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
     private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
 
         val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
         val message =

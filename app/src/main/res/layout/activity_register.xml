@@ -13,15 +13,15 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="368dp"
+            android:layout_height="141dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:srcCompat="@drawable/image_signup" />
+            app:srcCompat="@drawable/totu_book_l" />
 
         <TextView
             android:id="@+id/titleTextView"
@@ -185,10 +185,10 @@
             android:text="Sudah punya akun? "
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.411"
+            app:layout_constraintHorizontal_bias="0.40"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/protectedButton"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.173" />
 
         <TextView
             android:id="@+id/textButtonLogin"
@@ -203,7 +203,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textContentLogin"
             app:layout_constraintTop_toBottomOf="@+id/protectedButton"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.173" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineHorizontal"

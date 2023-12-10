@@ -39,10 +39,18 @@ class ProtectedEditText: AppCompatEditText, View.OnTouchListener {
                 // Do nothing.
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
+                if (s.toString().isNotEmpty()) {
+                    showClearButton()
+                } else {
+                    hideClearButton()
+                }
             }
             override fun afterTextChanged(s: Editable) {
-                // Do nothing.
+                error = if (s.length < 8) {
+                    "Password must be at least 8 characters"
+                } else {
+                    null
+                }
             }
         })
     }

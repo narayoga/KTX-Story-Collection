@@ -2,6 +2,7 @@ package com.example.talesoftheunknown.data.Retrofit
 
 import com.example.talesoftheunknown.data.Model.Auth.RegisterResponse
 import com.example.talesoftheunknown.data.Model.Auth.UserResponse
+import com.example.talesoftheunknown.data.Model.Story.ListStoryItem
 import com.example.talesoftheunknown.data.Model.Story.StoryResponse
 import com.example.talesoftheunknown.data.Model.Story.StoryUploadResponse
 import okhttp3.MultipartBody
@@ -13,6 +14,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
     @FormUrlEncoded
@@ -23,11 +25,6 @@ interface ApiService {
         @Field("password") password: String
     ): RegisterResponse
 
-    @GET("stories")
-    suspend fun getStories(
-        @Header("Authorization") token: String,
-    ): StoryResponse
-
     @FormUrlEncoded
     @POST("login")
     suspend fun login(
@@ -35,11 +32,32 @@ interface ApiService {
         @Field("password") password: String
     ): UserResponse
 
+    @GET("stories")
+    suspend fun getStories(
+        @Header("Authorization") token: String,
+    ): StoryResponse
+
+    @GET("stories")
+    suspend fun getStoriesWithPager(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Header("Authorization") token: String?
+    ): StoryResponse
+
+    @GET("stories")
+    suspend fun getStoriesWithLocation(
+        @Header("Authorization") token: String,
+        @Query("location") location : Int = 1,
+    ): StoryResponse
+
     @Multipart
-    @POST("stories/guest")
+    @POST("stories")
     suspend fun uploadImage(
+        @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
+        @Part("lat") lat: Float,
+        @Part("lon") lon: Float
     ):StoryUploadResponse
 
 }

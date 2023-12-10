@@ -1,14 +1,14 @@
 package com.example.talesoftheunknown.data.Model.Story
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "stories")
 data class ListStoryItem(
-
-	@field:SerializedName("photoUrl")
-	val photoUrl: String? = null,
-
-	@field:SerializedName("createdAt")
-	val createdAt: String? = null,
+	@PrimaryKey
+	@field:SerializedName("id")
+	val id: String,
 
 	@field:SerializedName("name")
 	val name: String? = null,
@@ -17,16 +17,23 @@ data class ListStoryItem(
 	val description: String? = null,
 
 	@field:SerializedName("lon")
-	val lon: Double? = null,
-
-	@field:SerializedName("id")
-	val id: String? = null,
+	val lon: Double,
 
 	@field:SerializedName("lat")
-	val lat: Double? = null
+	val lat: Double,
+
+	@field:SerializedName("photoUrl")
+	val photoUrl: String? = null,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String? = null
 )
 
+//@Entity(tableName = "stories")
 data class StoryResponse(
+//	@PrimaryKey
+//	@field:SerializedName("id")
+//	val id: String,
 
 	@field:SerializedName("listStory")
 	val listStory: List<ListStoryItem?>? = emptyList(),
